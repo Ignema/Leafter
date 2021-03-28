@@ -1,4 +1,5 @@
-# Projet Android
+# Leafter: Android Project
+
 Conception et développement d'une application mobile de lecture de livres numériques avec accessibilité aux malvoyants.
 
 ## Description
