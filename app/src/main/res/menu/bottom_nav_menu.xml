@@ -2,18 +2,30 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_home"
-        android:icon="@drawable/ic_home_black_24dp"
-        android:title="@string/title_home" />
+        android:id="@+id/miHome"
+        android:icon="@drawable/ic_library_books"
+        android:title="Books"
+        />
 
     <item
-        android:id="@+id/navigation_dashboard"
-        android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="@string/title_dashboard" />
+        android:id="@+id/miMusic"
+        android:icon="@drawable/ic_library_music"
+        android:iconTint="@color/secondary"
+        android:iconTintMode="add"
+        android:title="Music" />
 
     <item
-        android:id="@+id/navigation_notifications"
-        android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="@string/title_notifications" />
+        android:id="@+id/miPlacehoder"
+        android:title="" />
+
+    <item
+        android:id="@+id/miCatalogue"
+        android:icon="@drawable/ic_catalogue"
+        android:title="Catalogue" />
+
+    <item
+        android:id="@+id/miWriter"
+        android:icon="@drawable/ic_write"
+        android:title="Writer" />
 
 </menu>
