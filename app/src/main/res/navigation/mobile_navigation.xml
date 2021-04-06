@@ -7,19 +7,25 @@
 
     <fragment
         android:id="@+id/miHome"
-        android:name="com.android.leafter.ui.home.HomeFragment"
+        android:name="com.android.leafter.fragments.books.BooksFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_books" />
 
     <fragment
         android:id="@+id/miMusic"
-        android:name="com.android.leafter.ui.dashboard.DashboardFragment"
+        android:name="com.android.leafter.fragments.music.MusicFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_music" />
 
     <fragment
         android:id="@+id/miCatalogue"
-        android:name="com.android.leafter.ui.notifications.NotificationsFragment"
+        android:name="com.android.leafter.fragments.catalog.CatalogFragment"
         android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_catalog" />
+
+    <fragment
+        android:id="@+id/miWriter"
+        android:name="com.android.leafter.fragments.writer.WriterFragment"
+        android:label="Writer"
+        tools:layout="@layout/fragment_writer" />
 </navigation>
