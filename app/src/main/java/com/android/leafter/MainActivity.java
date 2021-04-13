@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
 //        bnv.getMenu().getItem(2).setEnabled(false);
 
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.miHome, R.id.miMusic, R.id.miCatalogue)
+                R.id.miHome, R.id.miMusic, R.id.miCatalogue,R.id.miWriter)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);

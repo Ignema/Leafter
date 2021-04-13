@@ -22,4 +22,9 @@
         android:name="com.android.leafter.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+    <fragment
+        android:id="@+id/miWriter"
+        android:name="com.android.leafter.ui.writer.WriterFragment"
+        android:label="@string/title_writer"
+        tools:layout="@layout/fragment_writer" />
 </navigation>
