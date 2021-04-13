@@ -1,5 +1,6 @@
 package com.android.leafter;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 
@@ -19,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout drawer;
 
+    @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,11 +34,12 @@ public class MainActivity extends AppCompatActivity {
                 R.id.miHome, R.id.miMusic, R.id.miCatalogue,R.id.miWriter)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-//        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+        //NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
         Toolbar toolbar = findViewById(R.id.topToolbar);
-        setSupportActionBar(toolbar);
+        //setSupportActionBar(toolbar);
+
 
         drawer = findViewById(R.id.drawerLayout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,

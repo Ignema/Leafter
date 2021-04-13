@@ -6,12 +6,14 @@
         android:id="@+id/search"
         android:icon="@drawable/ic_search"
         android:title="search"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/profile_pic"
         android:icon="@drawable/ic_circle"
         android:title="profile_pic"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
+
+
 
 </menu>
