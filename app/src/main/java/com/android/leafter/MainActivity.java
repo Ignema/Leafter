@@ -2,15 +2,19 @@ package com.android.leafter;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -27,15 +31,45 @@ public class MainActivity extends AppCompatActivity {
 //        getSupportActionBar().hide();
         setContentView(R.layout.activity_main);
 
-        BottomNavigationView navView = findViewById(R.id.bottomNavigationView);
+        BottomNavigationView bottomNavView = findViewById(R.id.bottomNavigationView);
+//        --------------------------------------------------------------------------------------------------------
+
+        bottomNavView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Fragment selectedFragment = null;
+                switch (item.getItemId()) {
+                    case R.id.miHome:
+                        selectedFragment = new BooksFragment();
+                        break;
+
+                    case R.id.miMusic:
+                        selectedFragment = new MusicFragment();
+                        break;
+                    case R.id.miCatalogue:
+                        selectedFragment = new CatalogueFragment();
+                        break;
+                    case R.id.miWriter:
+                        selectedFragment = new WriterFragment();
+                        break;
+                }
+//                Begin Transaction
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+                return true;
+            }
+        });
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new BooksFragment()).commit();
+
+//        --------------------------------------------------------------------------------------------------------
+
+
 //        bnv.getMenu().getItem(2).setEnabled(false); // to disable the placeholder item
 
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.miHome, R.id.miMusic, R.id.miCatalogue,R.id.miWriter)
+                R.id.miHome, R.id.miMusic, R.id.miCatalogue, R.id.miWriter)
                 .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         //NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        NavigationUI.setupWithNavController(navView, navController);
 
         Toolbar toolbar = findViewById(R.id.topToolbar);
         //setSupportActionBar(toolbar);

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/secondary"
+    android:background="@color/teal_200"
     tools:context=".BooksFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:text="Writer fragment"
+        android:text="Music fragment"
         android:textColor="@color/black"
         android:textSize="35dp"
 
