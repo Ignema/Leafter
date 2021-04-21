@@ -15,7 +15,15 @@
         android:text="Music fragment"
         android:textColor="@color/black"
         android:textSize="35dp"
-
         />
+
+    <Button
+        android:id="@+id/btnMusic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GoMusic"
+        android:textColor="@color/black"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"/>
 
 </RelativeLayout>
