@@ -33,12 +33,11 @@
 
         <FrameLayout
             android:id="@+id/fragment_container"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="664dp"
             android:layout_above="@id/coordinatorLayout"
             android:layout_below="@id/topToolbar"
-            android:background="@color/purple_500" />
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"

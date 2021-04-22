@@ -6,6 +6,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
@@ -23,6 +24,7 @@ import androidx.navigation.ui.NavigationUI;
 public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout drawer;
+    MaterialToolbar topnavBar;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -38,23 +40,32 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Fragment selectedFragment = null;
+                topnavBar = findViewById(R.id.topToolbar);
+                String topNavTitle = "";
                 switch (item.getItemId()) {
                     case R.id.miHome:
                         selectedFragment = new BooksFragment();
+                        topNavTitle = "Reading List";
                         break;
 
                     case R.id.miMusic:
                         selectedFragment = new MusicFragment();
+                        topNavTitle = "Music List";
                         break;
                     case R.id.miCatalogue:
                         selectedFragment = new CatalogueFragment();
+                        topNavTitle = "Catalogue List";
                         break;
                     case R.id.miWriter:
                         selectedFragment = new WriterFragment();
+                        topNavTitle = "Writer List";
                         break;
                 }
 //                Begin Transaction
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+                topnavBar.setTitle(topNavTitle);
+
+
                 return true;
             }
         });
