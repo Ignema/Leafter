@@ -24,8 +24,8 @@
         android:title="Catalogue" />
 
     <item
-        android:id="@+id/miWriter"
+        android:id="@+id/miWriterChoose"
         android:icon="@drawable/ic_write"
-        android:title="Writer" />
+        android:title="WriterChoose" />
 
 </menu>

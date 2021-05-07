@@ -9,17 +9,49 @@
         android:id="@+id/miHome"
         android:name="com.android.leafter.ui.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_miHome_to_bookInfoFragment"
+            app:destination="@id/bookInfoFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/miMusic"
-        android:name="com.android.leafter.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:name="com.android.leafter.ui.music.MusicFragment"
+        android:label="@string/title_music"
+        tools:layout="@layout/music_fragment" />
 
     <fragment
         android:id="@+id/miCatalogue"
-        android:name="com.android.leafter.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:name="com.android.leafter.ui.catalog.CatalogFragment"
+        android:label="@string/title_catalog"
+        tools:layout="@layout/catalog_fragment" />
+    <fragment
+        android:id="@+id/miWriterChoose"
+        android:name="com.android.leafter.ui.writerChoose.WriterChooseFragment"
+        android:label="@string/title_writer_choose"
+        tools:layout="@layout/writer_choose_fragment" >
+        <action
+            android:id="@+id/action_miWriterChoose_to_writerWriteFragment"
+            app:destination="@id/writerWriteFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/writerWriteFragment"
+        android:name="com.android.leafter.ui.writerWrite.WriterWriteFragment"
+        android:label="writer_write_fragment"
+        tools:layout="@layout/writer_write_fragment" />
+    <fragment
+        android:id="@+id/bookInfoFragment"
+        android:name="com.android.leafter.ui.bookInfo.BookInfoFragment"
+        android:label="book_info_fragment"
+        tools:layout="@layout/book_info_fragment" >
+        <action
+            android:id="@+id/action_bookInfoFragment_to_bookReaderFragment"
+            app:destination="@id/bookReaderFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/bookReaderFragment"
+        android:name="com.android.leafter.ui.bookReader.BookReaderFragment"
+        android:label="book_reader_fragment"
+        tools:layout="@layout/book_reader_fragment" />
 </navigation>
