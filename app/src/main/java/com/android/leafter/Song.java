@@ -1,16 +1,22 @@
 package com.android.leafter;
 
-public class Song {
+
+
+import java.io.Serializable;
+
+public class Song implements Serializable {
     private String title;
     private String artist;
     private String path;
 
+//    public Song() {
+//
+//    }
     public Song(String title, String artist, String path) {
         this.title = title;
         this.artist = artist;
         this.path = path;
     }
-
     public String getTitle() {
         return title;
     }
@@ -34,4 +40,5 @@ public class Song {
     public void setPath(String path) {
         this.path = path;
     }
+
 }

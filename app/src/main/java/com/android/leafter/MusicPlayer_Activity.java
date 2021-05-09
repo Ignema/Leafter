@@ -3,22 +3,30 @@ package com.android.leafter;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcel;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
+import android.widget.Toast;
+
+
+
+import java.io.IOException;
 
 public class MusicPlayer_Activity extends AppCompatActivity implements View.OnClickListener {
 
 //    Views delcaration
 
-    TextView tvTime, tvDuration;
+    TextView tvTime, tvDuration, songTitle, songArtist;
     Button btnPlay;
     SeekBar seekBarTime, seekBarVolume;
 
@@ -32,11 +40,32 @@ public class MusicPlayer_Activity extends AppCompatActivity implements View.OnCl
 
         tvTime = findViewById(R.id.tvTime);
         tvDuration = findViewById(R.id.tvDuration);
+        songTitle = findViewById(R.id.songTitle);
+        songArtist = findViewById(R.id.songArtist);
+
         btnPlay = findViewById(R.id.btnPlay);
         seekBarTime = findViewById(R.id.seekBar_time);
         seekBarVolume = findViewById(R.id.seekBarVolume);
 
-        musicPlayer = MediaPlayer.create(this, R.raw.mami_sayada);
+
+//        Song currentSong = Parcels.unwrap(getIntent().getParcelableExtra("currentSong"));
+        Song currentSong = (Song) getIntent().getSerializableExtra("currentSong");
+
+        songTitle.setText(currentSong.getTitle());
+        songArtist.setText(currentSong.getArtist());
+
+        musicPlayer = new MediaPlayer();
+        Toast.makeText(this,"before try file://"+currentSong.getPath(),Toast.LENGTH_SHORT).show();
+        try {
+            Toast.makeText(this,"after try file://"+currentSong.getPath(),Toast.LENGTH_SHORT).show();
+            musicPlayer.setDataSource("file://"+currentSong.getPath());
+            Toast.makeText(this,"after setDataSource file://"+currentSong.getPath(),Toast.LENGTH_SHORT).show();
+            musicPlayer.prepare();
+        } catch (IOException e) {
+            System.out.println("--------------> file://"+currentSong.getPath());
+            e.printStackTrace();
+        }
+//        musicPlayer = MediaPlayer.create(getApplicationContext(), R.raw.mami_sayada);
         musicPlayer.setLooping(true);
         musicPlayer.seekTo(0);
         musicPlayer.setVolume(0.5f, 0.5f);
@@ -57,12 +86,10 @@ public class MusicPlayer_Activity extends AppCompatActivity implements View.OnCl
                     seekBarTime.setProgress(progress);
                 }
             }
-
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
 
             }
-
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
 
