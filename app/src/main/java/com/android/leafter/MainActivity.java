@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        getSupportActionBar().hide();
+       // getSupportActionBar().hide();
         setContentView(R.layout.activity_main);
 
         BottomNavigationView bottomNavView = findViewById(R.id.bottomNavigationView);
@@ -62,9 +62,10 @@ public class MainActivity extends AppCompatActivity {
                         break;
                 }
 //                Begin Transaction
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
-                topnavBar.setTitle(topNavTitle);
-
+                if(selectedFragment!=null){
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+                    topnavBar.setTitle(topNavTitle);
+                }
 
                 return true;
             }

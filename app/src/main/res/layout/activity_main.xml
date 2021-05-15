@@ -27,7 +27,8 @@
                 app:layout_anchor="@+id/AppBarLayout"
                 app:layout_anchorGravity="center"
                 app:menu="@menu/top_nav_menu"
-                app:title="Reading List" />
+                app:title="Reading List"
+                app:titleTextColor="#FFFCFC" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
