@@ -8,4 +8,12 @@
     <string name="navigation_drawer_close">Close Navigation drawer</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="BookTitle">BookTitle</string>
+    <string name="BookAuthor">BookAuthor</string>
+    <string name="BookInfo">Book Information</string>
+    <string name="BookDescDetail">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur dictum urna sed eleifend aliquet. Suspendisse tempus feugiat tortor eu mattis. Integer placerat arcu at velit molestie pellentesque. Quisque sed faucibus sapien, id ornare purus. Nulla pretium massa sit amet leo maximus facilisis. Etiam consectetur nulla at felis egestas tincidunt. Suspendisse varius ipsum et lectus lobortis, ac laoreet est mattis. Donec mollis orci eget rhoncus semper. Nulla justo mauris, molestie in accumsan et, suscipit at tortor. In mattis odio non nibh porta facilisis. Nulla nec dolor nec turpis pellentesque rutrum.</string>
+    <string name="BookDescTitle">Description</string>
+    <string name="BookThumbnail">BookThumbnail</string>
+    <string name="ReadBook">ReadBook</string>
+    <string name="author">Author</string>
 </resources>
