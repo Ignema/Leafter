@@ -1,8 +1,6 @@
-package com.android.leafter;
+package com.android.leafter.fragments.music;
 
 import android.Manifest;
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -12,25 +10,22 @@ import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.PermissionChecker;
 import androidx.fragment.app.Fragment;
 
-import android.os.Parcel;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.android.leafter.activities.Music_Player_Activity;
+import com.android.leafter.R;
+import com.android.leafter.models.Song;
+import com.android.leafter.adapters.SongAdapter;
 
 import java.util.ArrayList;
 
@@ -128,7 +123,7 @@ public class MusicFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Song currentSong = listSongs.get(position);
 
-                Intent musicPlayerIntent = new Intent(getContext(), MusicPlayer_Activity.class);
+                Intent musicPlayerIntent = new Intent(getContext(), Music_Player_Activity.class);
 //                Bundle bundle = new Bundle();
 //                bundle.putParcelable("currentSong", Parcels.wrap(currentSong));
                 musicPlayerIntent.putExtra("currentSong", currentSong);

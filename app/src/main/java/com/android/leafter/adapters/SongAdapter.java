@@ -1,4 +1,4 @@
-package com.android.leafter;
+package com.android.leafter.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +9,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.android.leafter.R;
+import com.android.leafter.models.Song;
 
 import java.util.List;
 

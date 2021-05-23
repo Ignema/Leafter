@@ -4,11 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    tools:context=".BooksFragment">
+    tools:context=".fragments.books.BooksFragment">
 
-    <ListView
-        android:id="@+id/book_fragment_listview"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/book_fragment_recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:cacheColorHint="#FFFFFF" />
+        android:layout_height="match_parent" />
 </RelativeLayout>

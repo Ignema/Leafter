@@ -1,15 +1,11 @@
-package com.android.leafter;
+package com.android.leafter.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Parcel;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -19,10 +15,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.android.leafter.R;
+import com.android.leafter.models.Song;
 
 import java.io.IOException;
 
-public class MusicPlayer_Activity extends AppCompatActivity implements View.OnClickListener {
+public class Music_Player_Activity extends AppCompatActivity implements View.OnClickListener {
 
 //    Views delcaration
 
