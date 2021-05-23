@@ -8,7 +8,7 @@
     android:gravity="center"
     android:orientation="vertical"
     android:padding="16dp"
-    tools:context=".MusicPlayer_Activity">
+    tools:context=".activities.Music_Player_Activity">
 
     <TextView
         android:id="@+id/songTitle"

@@ -47,11 +47,21 @@
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="248dp"
+            android:layout_marginStart="12dp"
             android:layout_marginBottom="424dp"
             android:text="@string/BookAuthor"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintStart_toEndOf="@+id/textView8" />
+
+        <TextView
+            android:id="@+id/progress_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginBottom="28dp"
+            android:text="Progress"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -85,7 +95,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="#BBDEFB"
-            tools:context=".Book_Info">
+            tools:context=".activities.Book_Info_Activity">
 
             <TextView
                 android:id="@+id/textView"
@@ -109,16 +119,15 @@
     </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/readbtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
+        android:contentDescription="@string/ReadBook"
         android:foreground="@android:drawable/ic_media_play"
         android:foregroundGravity="center"
         app:backgroundTint="#64C0EA"
-        app:rippleColor="#FFFFFF"
-        android:contentDescription="@string/ReadBook" />
-
-    "
+        app:rippleColor="#FFFFFF" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

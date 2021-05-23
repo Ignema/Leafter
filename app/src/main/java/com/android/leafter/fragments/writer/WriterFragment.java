@@ -1,4 +1,4 @@
-package com.android.leafter;
+package com.android.leafter.fragments.writer;
 
 import android.os.Bundle;
 
@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.android.leafter.R;
 
 
 public class WriterFragment extends Fragment {
