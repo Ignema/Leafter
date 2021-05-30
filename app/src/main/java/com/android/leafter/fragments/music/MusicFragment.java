@@ -58,6 +58,10 @@ public class MusicFragment extends Fragment implements MediaController.MediaPlay
     //binding
     private boolean musicBound = false;
 
+    //media plauer intent
+    Intent onPreparedIntent = new Intent("MEDIA_PLAYER_PREPARED");
+    IntentFilter onPreparedIntentFilter = new IntentFilter("MEDIA_PLAYER_PREPARED");
+
     //controller
     private MusicController controller;
 
@@ -72,7 +76,7 @@ public class MusicFragment extends Fragment implements MediaController.MediaPlay
         if (ContextCompat.checkSelfPermission(
                 getContext(), permission) ==
                 PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(getContext(), "Already granted", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getContext(), "Already granted", Toast.LENGTH_SHORT).show();
             getSongList();
         } else {
             // You can directly ask for the permission.
@@ -108,7 +112,7 @@ public class MusicFragment extends Fragment implements MediaController.MediaPlay
 
     //    ------------------------------- END Permission ----------------------------------------------------
     // Broadcast receiver to determine when music player has been prepared
-    private BroadcastReceiver onPrepareReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver onPrepareReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context c, Intent i) {
             // When music player has been prepared, show controller
@@ -225,19 +229,18 @@ public class MusicFragment extends Fragment implements MediaController.MediaPlay
 //            setController();
             playbackPaused = false;
         }
-//        controller.show(0);
     }
     @Override
     public void start() {
         musicSrv.go();
-        controller.show();
+        controller.show(0);
     }
 
     @Override
     public void pause() {
         playbackPaused = true;
         musicSrv.pausePlayer();
-//        controller.show();
+        controller.show(0);
     }
 
     @Override
@@ -273,17 +276,17 @@ public class MusicFragment extends Fragment implements MediaController.MediaPlay
 
     @Override
     public boolean canPause() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean canSeekBackward() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean canSeekForward() {
-        return false;
+        return true;
     }
 
     @Override
@@ -333,33 +336,31 @@ public class MusicFragment extends Fragment implements MediaController.MediaPlay
     @Override
     public void onPause() {
         super.onPause();
-        paused = true;
     }
     @Override
     public void onResume() {
         super.onResume();
-        setController();
+
+//        setController();
+
         // Set up receiver for media player onPrepared broadcast
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(onPrepareReceiver,
-                new IntentFilter("MEDIA_PLAYER_PREPARED"));
-        if (paused) {
-//            setController();
-            paused = false;
-        }
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(onPrepareReceiver, onPreparedIntentFilter);
+
+//        controller.show(0);
+
+//        if (paused) {
+////            setController();
+//            paused = false;
+//        }
 
     }
 
     @Override
     public void onStop() {
+        Toast.makeText(getContext(), "I stopped", Toast.LENGTH_SHORT).show();
         controller.hide();
+        controller = null;
+        System.gc();
         super.onStop();
     }
-
-    @Override
-    public void onDestroy() {
-        getContext().stopService(playIntent);
-        musicSrv = null;
-        super.onDestroy();
-    }
-
 }
