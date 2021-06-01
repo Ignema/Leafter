@@ -38,6 +38,8 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.ui.AppBarConfiguration;
 
 import java.io.File;
@@ -70,13 +72,13 @@ public class Book_List_Activity extends AppCompatActivity {
     public final String SHOW_STATUS = "showStatus";
     public final static String prefname = "booklist";
     private boolean openLastread = false;
-    private static boolean alreadyStarted=false;
+    private static boolean alreadyStarted = false;
 
     @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       // getSupportActionBar().hide();
+        // getSupportActionBar().hide();
         setContentView(R.layout.activity_main);
 
         data = getSharedPreferences(prefname, Context.MODE_PRIVATE);
@@ -121,8 +123,11 @@ public class Book_List_Activity extends AppCompatActivity {
                         break;
                 }
 //                Begin Transaction
-                if(selectedFragment!=null){
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+                if (selectedFragment != null) {
+                    getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out).add(R.id.fragment_container, selectedFragment).commit();
+//                    getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out).show(selectedFragment).commit();
+
+
                     topnavBar.setTitle(topNavTitle);
                 }
 
@@ -202,14 +207,16 @@ public class Book_List_Activity extends AppCompatActivity {
             }
         }
 
-        if (!hadSpecialOpen){
+        if (!hadSpecialOpen) {
 
             switch (data.getInt(STARTWITH_KEY, STARTLASTREAD)) {
                 case STARTLASTREAD:
-                    if (recentread!=-1 && data.getBoolean(Reader_Activity.READEREXITEDNORMALLY, true)) openLastread = true;
+                    if (recentread != -1 && data.getBoolean(Reader_Activity.READEREXITEDNORMALLY, true))
+                        openLastread = true;
                     break;
                 case STARTOPEN:
-                    showStatus = DatabaseAPI.STATUS_STARTED; break;
+                    showStatus = DatabaseAPI.STATUS_STARTED;
+                    break;
                 case STARTALL:
                     showStatus = DatabaseAPI.STATUS_ANY;
             }
@@ -225,7 +232,7 @@ public class Book_List_Activity extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                    yay? REQUEST_READ_EXTERNAL_STORAGE : REQUEST_READ_EXTERNAL_STORAGE_NOYAY);
+                    yay ? REQUEST_READ_EXTERNAL_STORAGE : REQUEST_READ_EXTERNAL_STORAGE_NOYAY);
             return false;
         }
         return true;
@@ -248,16 +255,16 @@ public class Book_List_Activity extends AppCompatActivity {
 
             Metadata metadata = Book.getMetaData(this, filename);
 
-            if (metadata!=null) {
+            if (metadata != null) {
 
                 return db.addBook(filename, metadata.getTitle(), metadata.getAuthor(), dateadded) > -1;
 
             } else if (showToastWarnings) {
-                Toast.makeText(this, getString(R.string.coulndt_add_book, new File(filename).getName()),Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.coulndt_add_book, new File(filename).getName()), Toast.LENGTH_SHORT).show();
             }
 
         } catch (Exception e) {
-            Log.e("BookList", "File: " + filename  + ", " + e.getMessage(), e);
+            Log.e("BookList", "File: " + filename + ", " + e.getMessage(), e);
         }
         return false;
     }
@@ -285,7 +292,7 @@ public class Book_List_Activity extends AppCompatActivity {
         int title = R.string.app_name;
         switch (status) {
             case DatabaseAPI.STATUS_SEARCH:
-                String lastSearch = data.getString("__LAST_SEARCH_STR__","");
+                String lastSearch = data.getString("__LAST_SEARCH_STR__", "");
                 if (!lastSearch.trim().isEmpty()) {
                     boolean stitle = data.getBoolean("__LAST_TITLE__", true);
                     boolean sauthor = data.getBoolean("__LAST_AUTHOR__", true);
@@ -320,7 +327,7 @@ public class Book_List_Activity extends AppCompatActivity {
 
         SortBy sortorder = getSortOrder();
         final List<Integer> books = db.getBookIds(sortorder, status);
-        populateBooks(books,  showRecent);
+        populateBooks(books, showRecent);
 
         invalidateOptionsMenu();
     }
@@ -332,7 +339,7 @@ public class Book_List_Activity extends AppCompatActivity {
             if (recentread >= 0) {
                 //viewAdder.displayBook(recentread);
                 books.remove((Integer) recentread);
-                books.add(0, (Integer)recentread);
+                books.add(0, (Integer) recentread);
             }
         }
 
@@ -380,11 +387,29 @@ public class Book_List_Activity extends AppCompatActivity {
     }
 
     public static String maxlen(String text, int maxlen) {
-        if (text!=null && text.length() > maxlen) {
-            int minus = text.length()>3?3:0;
+        if (text != null && text.length() > maxlen) {
+            int minus = text.length() > 3 ? 3 : 0;
 
-            return text.substring(0, maxlen-minus) + "...";
+            return text.substring(0, maxlen - minus) + "...";
         }
         return text;
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.v("debug : ", "BOOK_LIST_ACTIVITY  onDestroy");
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onStop() {
+        Log.v("debug : ", "BOOK_LIST_ACTIVITY  onStop");
+        super.onStop();
+    }
+
+    @Override
+    protected void onPause() {
+        Log.v("debug : ", "BOOK_LIST_ACTIVITY  onPause");
+        super.onPause();
     }
 }

@@ -58,6 +58,10 @@ public class MusicFragment extends Fragment implements MediaController.MediaPlay
     //binding
     private boolean musicBound = false;
 
+    //media plauer intent
+    Intent onPreparedIntent = new Intent("MEDIA_PLAYER_PREPARED");
+    IntentFilter onPreparedIntentFilter = new IntentFilter("MEDIA_PLAYER_PREPARED");
+
     //controller
     private MusicController controller;
 
@@ -72,7 +76,7 @@ public class MusicFragment extends Fragment implements MediaController.MediaPlay
         if (ContextCompat.checkSelfPermission(
                 getContext(), permission) ==
                 PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(getContext(), "Already granted", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getContext(), "Already granted", Toast.LENGTH_SHORT).show();
             getSongList();
         } else {
             // You can directly ask for the permission.
@@ -108,12 +112,12 @@ public class MusicFragment extends Fragment implements MediaController.MediaPlay
 
     //    ------------------------------- END Permission ----------------------------------------------------
     // Broadcast receiver to determine when music player has been prepared
-    private BroadcastReceiver onPrepareReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver onPrepareReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context c, Intent i) {
             // When music player has been prepared, show controller
+            Log.v("debug : ", "onPrepareReceiver called");
             controller.show(0);
-            Log.v("ControlSHOW", "is called");
         }
     };
 
@@ -125,6 +129,7 @@ public class MusicFragment extends Fragment implements MediaController.MediaPlay
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.v("debug : ", "Oncreate called");
         // Inflate the layout for this fragment
         musicFragmentView = inflater.inflate(R.layout.fragment_music, container, false);
 
@@ -155,6 +160,7 @@ public class MusicFragment extends Fragment implements MediaController.MediaPlay
 
             }
         });
+
         return musicFragmentView;
     }
 
@@ -166,7 +172,11 @@ public class MusicFragment extends Fragment implements MediaController.MediaPlay
             MusicService.MusicBinder binder = (MusicService.MusicBinder) service;
             //get service
             musicSrv = binder.getService();
-            Log.v("musicSrv STATE :", String.valueOf(musicSrv!=null));
+            if(musicSrv!=null){
+                Log.v("debug : ", "onServiceConnected --> musicSrv not null");
+            }else{
+                Log.v("debug : ", "onServiceConnected --> musicSrv is null");
+            }
             //pass list
             musicSrv.setList(songList);
             musicBound = true;
@@ -174,7 +184,9 @@ public class MusicFragment extends Fragment implements MediaController.MediaPlay
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
+            Log.v("debug : ", "onServiceDisconnected -->called");
             musicBound = false;
+
         }
     };
     //start and bind the service when the activity starts
@@ -185,6 +197,9 @@ public class MusicFragment extends Fragment implements MediaController.MediaPlay
             playIntent = new Intent(getContext(), MusicService.class);
             getActivity().bindService(playIntent, musicConnection, Context.BIND_AUTO_CREATE);
             getActivity().startService(playIntent);
+            Log.v("debug : ", "playIntent == null onStart called");
+        }else{
+            Log.v("debug : ", "playIntent != null onStart called");
         }
     }
 
@@ -220,24 +235,27 @@ public class MusicFragment extends Fragment implements MediaController.MediaPlay
     public void songPicked(int position) {
         musicSrv.setSong(position);
         musicSrv.playSong();
+        Log.v("debug : ", "songPicked  called");
 
         if (playbackPaused) {
 //            setController();
             playbackPaused = false;
         }
-//        controller.show(0);
     }
     @Override
     public void start() {
+
         musicSrv.go();
-        controller.show();
+        controller.show(0);
+        Log.v("debug : ", "start  called and controller show");
     }
 
     @Override
     public void pause() {
         playbackPaused = true;
         musicSrv.pausePlayer();
-//        controller.show();
+        controller.show(0);
+        Log.v("debug : ", "pause  called and controller show");
     }
 
     @Override
@@ -261,8 +279,11 @@ public class MusicFragment extends Fragment implements MediaController.MediaPlay
 
     @Override
     public boolean isPlaying() {
-        if (musicSrv != null && musicBound)
+        if (musicSrv != null && musicBound){
+//            Log.v("debug : ", "isPlaying  called inside if");
             return musicSrv.isPng();
+        }
+        Log.v("debug : ", "isPlaying  called inside else");
         return false;
     }
 
@@ -273,17 +294,17 @@ public class MusicFragment extends Fragment implements MediaController.MediaPlay
 
     @Override
     public boolean canPause() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean canSeekBackward() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean canSeekForward() {
-        return false;
+        return true;
     }
 
     @Override
@@ -310,6 +331,7 @@ public class MusicFragment extends Fragment implements MediaController.MediaPlay
         controller.setMediaPlayer(this);
         controller.setAnchorView(musicFragmentView.findViewById(R.id.song_list));
         controller.setEnabled(true);
+        Log.v("debug : ", "setController  called");
     }
 
     private void playNext() {
@@ -332,34 +354,35 @@ public class MusicFragment extends Fragment implements MediaController.MediaPlay
 
     @Override
     public void onPause() {
+        Log.v("debug : ", "onPause  called");
         super.onPause();
-        paused = true;
     }
     @Override
     public void onResume() {
+        Log.v("debug : ", "onResume  called");
         super.onResume();
-        setController();
+
+//        setController();
+
         // Set up receiver for media player onPrepared broadcast
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(onPrepareReceiver,
-                new IntentFilter("MEDIA_PLAYER_PREPARED"));
-        if (paused) {
-//            setController();
-            paused = false;
-        }
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(onPrepareReceiver, onPreparedIntentFilter);
+
+//        controller.show(0);
+
+//        if (paused) {
+////            setController();
+//            paused = false;
+//        }
 
     }
 
     @Override
     public void onStop() {
-        controller.hide();
+
+//        controller.hide();
+//        controller = null;
+        Log.v("debug : ", "onStop  called and controller is hided and set to null");
+//        System.gc();
         super.onStop();
     }
-
-    @Override
-    public void onDestroy() {
-        getContext().stopService(playIntent);
-        musicSrv = null;
-        super.onDestroy();
-    }
-
 }
