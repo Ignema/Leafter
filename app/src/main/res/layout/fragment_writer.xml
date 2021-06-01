@@ -9,14 +9,13 @@
 
     <EditText
         android:id="@+id/textArea_story"
-        android:layout_width="351dp"
-        android:layout_height="461dp"
+        android:layout_width="352dp"
+        android:layout_height="314dp"
         android:layout_marginStart="28dp"
         android:layout_marginTop="40dp"
         android:background="#FAF6F6"
         android:gravity="top|left"
         android:inputType="textMultiLine"
-        android:lines="6"
         android:overScrollMode="always"
         android:scrollbarStyle="insideInset"
         android:scrollbars="vertical"
@@ -25,7 +24,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/writer_title"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.255" />
 
     <TextView
         android:id="@+id/textView5"

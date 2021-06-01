@@ -8,12 +8,5 @@
         android:title="search"
         app:showAsAction="ifRoom" />
 
-    <item
-        android:id="@+id/profile_pic"
-        android:icon="@drawable/ic_circle"
-        android:title="profile_pic"
-        app:showAsAction="ifRoom" />
-
-
 
 </menu>

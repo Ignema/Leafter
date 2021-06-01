@@ -9,18 +9,21 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
-        android:id="@+id/profile_pic"
+        android:id="@+id/logo_sidebar"
         android:layout_width="120dp"
         android:layout_height="100dp"
         android:layout_gravity="center_horizontal"
-        android:src="@drawable/ic_add" />
+        app:srcCompat="@drawable/whatsapp_icone" />
+
     <TextView
+        android:id="@+id/Logo_sidebar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="6dp"
-        android:layout_marginTop="6dp"
         android:layout_gravity="center_horizontal"
-        android:text="Welcome User"
-        android:textSize="25dp"/>
+        android:layout_marginTop="6dp"
+        android:padding="6dp"
+        android:text="Leafter: Read at Ease"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
 </LinearLayout>
