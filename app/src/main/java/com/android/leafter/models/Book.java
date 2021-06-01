@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.leafter.models.extensions.Epub;
 import com.android.leafter.models.extensions.Html;
@@ -99,7 +100,7 @@ public abstract class Book {
             }
             return getUriForSectionID(sectionIDs.get(currentSectionIDPos));
         } catch (Throwable t) {
-            Log.e("Booky", t.getMessage(), t);
+            Log.e("Book", t.getMessage(), t);
             return null;
         }
     }
@@ -350,7 +351,6 @@ public abstract class Book {
         Book book = getBookHandler(context, filename);
         if (book!=null) {
             book.setFile(new File(filename));
-
             return book.getMetaData();
         }
 
