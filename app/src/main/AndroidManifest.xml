@@ -3,6 +3,8 @@
     package="com.android.leafter">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
@@ -31,8 +33,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.Fetch_Book_Activity"
-            android:parentActivityName=".activities.Book_List_Activity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:parentActivityName=".activities.Book_List_Activity" />
+        <service android:name="com.android.leafter.Service.MusicService" />
     </application>
 
 </manifest>

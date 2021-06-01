@@ -1,41 +1,68 @@
 package com.android.leafter.adapters;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.android.leafter.R;
 import com.android.leafter.models.Song;
 
-import java.util.List;
+/*
+ * This is demo code to accompany the Mobiletuts+ series:
+ * Android SDK: Creating a Music Player
+ *
+ * Sue Smith - February 2014
+ */
 
-public class SongAdapter extends ArrayAdapter<Song> {
+public class SongAdapter extends BaseAdapter {
 
-    TextView tvSongTitle;
-    TextView tvSongArtist;
+    //song list and layout
+    private ArrayList<Song> songs;
+    private LayoutInflater songInf;
 
-    public SongAdapter(@NonNull Context context, @NonNull List<Song> objects) {
-        super(context, 0, objects);
+    //constructor
+    public SongAdapter(Context c, ArrayList<Song> theSongs){
+        songs=theSongs;
+        songInf=LayoutInflater.from(c);
     }
 
-    @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_song, null);
-
-        tvSongArtist = (TextView) convertView.findViewById(R.id.tvSongArtist);
-        tvSongTitle = (TextView) convertView.findViewById(R.id.tvSongTitle);
-        Song song = getItem(position);
-        tvSongTitle.setText(song.getTitle());
-        tvSongArtist.setText(song.getArtist());
-
-
-        return convertView;
+    public int getCount() {
+        return songs.size();
     }
+
+    @Override
+    public Object getItem(int arg0) {
+        return null;
+    }
+
+    @Override
+    public long getItemId(int arg0) {
+        return 0;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        //map to song layout
+        LinearLayout songLay = (LinearLayout)songInf.inflate
+                (R.layout.item_song, parent, false);
+        //get title and artist views
+        TextView songView = (TextView)songLay.findViewById(R.id.song_title);
+        TextView artistView = (TextView)songLay.findViewById(R.id.song_artist);
+        //get song using position
+        Song currSong = songs.get(position);
+        //get title and artist strings
+        songView.setText(currSong.getTitle());
+        artistView.setText(currSong.getArtist());
+        //set position as tag
+        songLay.setTag(position);
+        return songLay;
+    }
+
 }
