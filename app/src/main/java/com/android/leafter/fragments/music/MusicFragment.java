@@ -22,7 +22,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 
-import com.android.leafter.activities.Music_Player_Activity;
 import com.android.leafter.R;
 import com.android.leafter.models.Song;
 import com.android.leafter.adapters.SongAdapter;
@@ -123,11 +122,11 @@ public class MusicFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Song currentSong = listSongs.get(position);
 
-                Intent musicPlayerIntent = new Intent(getContext(), Music_Player_Activity.class);
-//                Bundle bundle = new Bundle();
-//                bundle.putParcelable("currentSong", Parcels.wrap(currentSong));
-                musicPlayerIntent.putExtra("currentSong", currentSong);
-                startActivity(musicPlayerIntent);
+//                Intent musicPlayerIntent = new Intent(getContext(), Music_Player_Activity.class);/
+////                Bundle bundle = new Bundle();
+////                bundle.putParcelable("currentSong", Parcels.wrap(currentSong));
+//                musicPlayerIntent.putExtra("currentSong", currentSong);
+//                startActivity(musicPlayerIntent);
             }
         });
 
