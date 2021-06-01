@@ -122,7 +122,7 @@ public class Book_List_Activity extends AppCompatActivity {
                 }
 //                Begin Transaction
                 if(selectedFragment!=null){
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+                    getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, selectedFragment).commit();
                     topnavBar.setTitle(topNavTitle);
                 }
 
@@ -386,5 +386,23 @@ public class Book_List_Activity extends AppCompatActivity {
             return text.substring(0, maxlen-minus) + "...";
         }
         return text;
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.v("debug : ", "BOOK_LIST_ACTIVITY  onDestroy");
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onStop() {
+        Log.v("debug : ", "BOOK_LIST_ACTIVITY  onStop");
+        super.onStop();
+    }
+
+    @Override
+    protected void onPause() {
+        Log.v("debug : ", "BOOK_LIST_ACTIVITY  onPause");
+        super.onPause();
     }
 }
