@@ -7,7 +7,7 @@
     android:padding="8dp">
 
     <TextView
-        android:id="@+id/tvSongTitle"
+        android:id="@+id/song_title"
         android:layout_width="393dp"
         android:layout_height="50dp"
         android:background="@color/primary"
@@ -19,7 +19,7 @@
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/tvSongArtist"
+        android:id="@+id/song_artist"
         android:layout_width="393dp"
         android:layout_height="41dp"
         android:background="@color/primary"

@@ -88,6 +88,13 @@
                 android:layout_weight="1"
                 android:contentDescription="@string/zoom"
                 android:src="@android:drawable/ic_menu_zoom" />
+            <Button
+                android:id="@+id/tts_button"
+                android:layout_width="match_parent"
+                android:layout_height="@android:dimen/app_icon_size"
+                android:layout_marginBottom="12dp"
+                android:layout_weight="1"
+                android:text="TTS" />
 
         </LinearLayout>
     </FrameLayout>
@@ -111,8 +118,7 @@
             android:gravity="center"
             android:padding="3dp"
             android:text="@string/prev_text"
-            android:textStyle="bold"
-            app:backgroundTint="#474444" />
+            android:textStyle="bold" />
 
 
         <ImageButton
@@ -121,7 +127,6 @@
             android:layout_height="34dp"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:background="#FFEE58"
             android:padding="3dp"
             android:src="@android:drawable/arrow_up_float" />
 
@@ -144,9 +149,7 @@
             android:gravity="center"
             android:padding="3dp"
             android:text="@string/next_text"
-            android:textStyle="bold"
-            app:backgroundTint="#474444"
-            app:iconTint="#FFFFFF" />
+            android:textStyle="bold" />
     </LinearLayout>
 
 </RelativeLayout>

@@ -6,6 +6,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,6 +23,7 @@ import com.android.leafter.adapters.BookAdapter;
 import com.android.leafter.persistence.database.DatabaseAPI;
 import com.android.leafter.persistence.database.Instance;
 import com.android.leafter.util.SortBy;
+import com.android.leafter.viewModels.SearchViewModel;
 
 public class BooksFragment extends Fragment {
 
@@ -56,6 +59,16 @@ public class BooksFragment extends Fragment {
         });
 
         recyclerView.setAdapter(bookAdapter);
+
+        SearchViewModel searchViewModel = new ViewModelProvider(getActivity()).get(SearchViewModel.class);
+        searchViewModel.getQuery().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                if (s != null) {
+                    bookAdapter.getFilter().filter(s);
+                }
+            }
+        });
     }
 
     private void myClick(View view, String bookid) {

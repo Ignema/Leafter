@@ -19,6 +19,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.Display;
 import android.view.MenuItem;
@@ -27,14 +28,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
@@ -42,8 +46,14 @@ import androidx.annotation.RequiresApi;
 import com.android.leafter.R;
 import com.android.leafter.models.Book;
 
+import org.xml.sax.Parser;
+
 import java.io.File;
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -58,6 +68,8 @@ public class Reader_Activity extends Activity {
     private Book book;
 
     private WebView webView;
+    private boolean switcher=false;
+    int count;
 
     public static final String FILENAME = "filename";
     public static final String SCREEN_PAGING = "screenpaging";
@@ -87,12 +99,34 @@ public class Reader_Activity extends Activity {
 
     private boolean hasLightSensor = false;
 
-    @SuppressLint("ClickableViewAccessibility")
+    private TextToSpeech textToSpeech;
+
+    private TextView textview;
+
+    private ArrayList<String> FragmentsText,backup;
+
+    @SuppressLint({"ClickableViewAccessibility", "JavascriptInterface"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.reader_activity);
         final Intent intent = getIntent();
+
+        textToSpeech=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if( status==TextToSpeech.SUCCESS) {
+                    int result = textToSpeech.setLanguage(Locale.US);
+                    if (result==TextToSpeech.LANG_MISSING_DATA || result==TextToSpeech.LANG_NOT_SUPPORTED)
+                        Log.e("TTS","Language not supported");
+                    else Log.e("TTS","Working");
+                }else {
+                    Log.e("TTS","Initialization failed");
+                }
+            }
+        });
+        textToSpeech.setPitch(.5f);
+        textToSpeech.setSpeechRate(.5f);
 
         ActionBar ab = getActionBar();
         if (ab!=null) ab.hide();
@@ -275,6 +309,36 @@ public class Reader_Activity extends Activity {
                 //hideMenu();
             }
         });
+        Button tts=findViewById(R.id.tts_button);
+        tts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!switcher) {
+                    count=0;
+                    for (String s : FragmentsText) {
+                        textToSpeech.speak(s, TextToSpeech.QUEUE_ADD, null);
+                        count++;
+                    }
+                    switcher=true;
+                }
+                else {
+                    textToSpeech.stop();
+
+                    switcher=false;
+                    int d=0;
+                    for (String s : FragmentsText) {
+                        if(d>=count){
+                            backup.add(s);
+                        }
+                        d++;
+                    }
+                    FragmentsText.clear();
+                    for (String s : backup) {
+                        FragmentsText.add(s);
+                    }
+                }
+            }
+        });
 
         showMore.setOnClickListener(morelessControls);
         findViewById(R.id.control_view_less).setOnClickListener(morelessControls);
@@ -316,6 +380,7 @@ public class Reader_Activity extends Activity {
 
         //findFile();
         String filename = intent.getStringExtra(FILENAME);
+        System.out.println(filename);
         if (filename!=null) {
             //if the app crashes on this book,
             // this flag will remain to let the booklist activity know not to auto start it again.
@@ -327,12 +392,107 @@ public class Reader_Activity extends Activity {
 
     }
 
+
+
+    @SuppressLint("JavascriptInterface")
+    public void ExtractText(){
+        textview=new TextView(this);
+        class MyJavaScriptInterface{
+            private TextView contentView;
+            public MyJavaScriptInterface(TextView aContentView)
+            {
+                contentView = aContentView;
+            }
+
+
+            @JavascriptInterface
+            public void showHTML(String html_data)
+            {
+                final String content = html_data;
+                Log.e(TAG, " ======>  HTML Data : "+  html_data);
+                textview.setText(html_data);
+                IgnoreTags(textview);
+                Log.e(TAG,"=====> Result : "+textview.getText().toString() );
+            }
+        }
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.addJavascriptInterface(new MyJavaScriptInterface(textview), "HTMLOUT");
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url)
+            {
+                view.loadUrl("javascript:window.HTMLOUT.showHTML('<head>'+document.getElementsByTagName('body')[0].innerHTML+'</head>');");
+            }
+        });
+
+
+    }
+
+    public void IgnoreTags(TextView textView){
+        String result="", s=textView.getText().toString();
+        int n=s.length();
+        for(int i=0;i<n;i++){
+            if(s.charAt(i)!='<') {
+                if(s.charAt(i)=='&'){
+                    while (s.charAt(i)!=';')i++;
+                    continue;
+                }
+                result += s.charAt(i);
+            }
+            else {
+                while (s.charAt(i)!='>')i++;
+            }
+        }
+        textView.setText(result);
+        FragmentsText=fragmentString(textview.getText().toString());
+    }
+
+    public ArrayList<String> fragmentString(String text){
+
+        ArrayList<String>arrOfStr =new ArrayList<>();
+        int lengh=text.length();
+        StringBuilder temp= new StringBuilder();
+        for(int i=0;i<lengh;i++){
+            if((text.charAt(i)>='a' && text.charAt(i)<='z') || (text.charAt(i)>='A' && text.charAt(i)<='Z') || (text.charAt(i))>='0' && text.charAt(i)<='9' ){
+                int j=i;
+                while (j<lengh && text.charAt(j)!=' ' && text.charAt(j)!='\n') {
+                    temp.append(text.charAt(j));
+                    j++;
+                }
+                i=j;
+                Log.d("HERE",temp.toString());
+                arrOfStr.add(temp.toString());
+                temp = new StringBuilder();
+            }
+        }
+        ArrayList<String> arrResult=new ArrayList<>();
+
+        int n=arrOfStr.size();
+        Log.d("fragmentstrig", String.valueOf(n));
+        for(int i=0;i<n;i+=15){
+            temp = new StringBuilder();
+            for(int j=i;j<=i+14;j++){
+                if(j<n) {
+                    if (temp.toString().equals("")) temp.append(arrOfStr.get(j));
+                    else temp.append(" " + arrOfStr.get(j));
+                }
+                else break;
+            }
+            arrResult.add(temp.toString());
+            Log.d("fragmentString","======> "+temp);
+        }
+
+        return arrResult;
+
+    }
+
+
     @Override
     public void onBackPressed() {
         finish();
-//        Intent main = new Intent(this, Book_List_Activity.class);
-//        main.setAction(Book_List_Activity.ACTION_SHOW_LAST_STATUS);
-//        startActivity(main);
+        Intent main = new Intent(this, Book_List_Activity.class);
+        main.setAction(Book_List_Activity.ACTION_SHOW_LAST_STATUS);
+        startActivity(main);
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -605,13 +765,17 @@ public class Reader_Activity extends Activity {
         }
     }
 
+    private void speak(){
+        String text=textview.getText().toString();
+        textToSpeech.speak(text,TextToSpeech.QUEUE_FLUSH,null);
+    }
 
     private void showUri(Uri uri) {
         if (uri !=null) {
-            Log.d(TAG, "trying to load " + uri);
-
+            ExtractText();
             //book.clearSectionOffset();
             webView.loadUrl(uri.toString());
+            Log.d("Hamza)))","======>>>> "+textview.getText().toString());
         }
     }
 
@@ -750,6 +914,10 @@ public class Reader_Activity extends Activity {
             timer.cancel();
             timer.purge();
             timer = null;
+        }
+        if(textToSpeech!=null){
+            textToSpeech.stop();
+            textToSpeech.shutdown();
         }
         super.onDestroy();
     }

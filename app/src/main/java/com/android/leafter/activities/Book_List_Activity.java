@@ -7,7 +7,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,6 +27,7 @@ import com.android.leafter.persistence.database.DatabaseAPI;
 import com.android.leafter.persistence.database.Instance;
 import com.android.leafter.persistence.filesystem.FileAPI;
 import com.android.leafter.util.SortBy;
+import com.android.leafter.viewModels.SearchViewModel;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -32,16 +35,19 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.ui.AppBarConfiguration;
 
 import java.io.File;
 import java.util.List;
+import java.util.Locale;
 
 public class Book_List_Activity extends AppCompatActivity {
 
@@ -76,7 +82,6 @@ public class Book_List_Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       // getSupportActionBar().hide();
         setContentView(R.layout.activity_main);
 
         data = getSharedPreferences(prefname, Context.MODE_PRIVATE);
@@ -92,6 +97,9 @@ public class Book_List_Activity extends AppCompatActivity {
         });
 
 
+
+
+
         BottomNavigationView bottomNavView = findViewById(R.id.bottomNavigationView);
 //        --------------------------------------------------------------------------------------------------------
 
@@ -100,6 +108,7 @@ public class Book_List_Activity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Fragment selectedFragment = null;
                 topnavBar = findViewById(R.id.topToolbar);
+                setSupportActionBar(topnavBar);
                 String topNavTitle = "";
                 switch (item.getItemId()) {
                     case R.id.miHome:
@@ -143,7 +152,7 @@ public class Book_List_Activity extends AppCompatActivity {
         //NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
         Toolbar toolbar = findViewById(R.id.topToolbar);
-        //setSupportActionBar(toolbar);
+        setSupportActionBar(toolbar);
 
 
         drawer = findViewById(R.id.drawerLayout);
@@ -163,6 +172,29 @@ public class Book_List_Activity extends AppCompatActivity {
 
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.top_nav_menu,menu);
+        MenuItem searchItem=menu.findItem(R.id.search);
+        SearchView searchView= (SearchView) searchItem.getActionView();
+        SearchViewModel searchViewModel=new ViewModelProvider(this).get(SearchViewModel.class);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                searchViewModel.setQuery(newText);
+                return false;
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override

@@ -5,6 +5,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,15 +14,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.leafter.R;
 import com.android.leafter.activities.Book_List_Activity;
+import com.android.leafter.models.Book;
+import com.android.leafter.models.Book;
 import com.android.leafter.persistence.database.DatabaseAPI;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-public class BookAdapter extends  RecyclerView.Adapter<BookAdapter.BookViewHolder> {
+public class BookAdapter extends  RecyclerView.Adapter<BookAdapter.BookViewHolder> implements Filterable {
     private final List<Integer> mBookIds;
     private final DatabaseAPI mDB;
     private final Context mContext;
+    private ArrayList<Integer> booksIdfull;
+
 
     private View.OnClickListener mOnClickListener;
     private View.OnLongClickListener mOnLongClickListener;
@@ -46,6 +54,43 @@ public class BookAdapter extends  RecyclerView.Adapter<BookAdapter.BookViewHolde
         mBookIds = bookIds;
         mDB = db;
         setHasStableIds(true);
+        booksIdfull=new ArrayList<>(mBookIds);
+    }
+
+
+    private final Filter myfilter=new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            String searchtext=constraint.toString().toLowerCase();
+            ArrayList<Integer> temp=new ArrayList<>();
+            if(searchtext.length() == 0){
+                temp.addAll(booksIdfull);
+            }
+            else {
+                DatabaseAPI.BookRecord item;
+                for(Integer id: booksIdfull){
+                    item=mDB.getBookRecord(id);
+                    if(item.title.toLowerCase().contains(searchtext)
+                            || item.author.toLowerCase().contains(searchtext))temp.add(id);
+                }
+            }
+            FilterResults filterResults=new FilterResults();
+            for(Integer a :temp) System.out.println(mDB.getBookRecord(a).title+" ....... "+mDB.getBookRecord(a).author);
+            filterResults.values=temp;
+            return filterResults;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            mBookIds.clear();
+            mBookIds.addAll((Collection<? extends Integer>) results.values);
+            notifyDataSetChanged();
+        }
+    };
+
+    @Override
+    public Filter getFilter() {
+        return myfilter;
     }
 
 
@@ -75,13 +120,13 @@ public class BookAdapter extends  RecyclerView.Adapter<BookAdapter.BookViewHolde
 
     }
 
+
     public void setBooks(List<Integer> bookIds) {
         int size = mBookIds.size();
         mBookIds.clear();
         notifyItemRangeRemoved(0, size);
         mBookIds.addAll(bookIds);
         notifyItemRangeInserted(0, mBookIds.size());
-
     }
 
     @Override
@@ -107,6 +152,7 @@ public class BookAdapter extends  RecyclerView.Adapter<BookAdapter.BookViewHolde
         if (book != null && book.filename != null) {
             holder.mTitleView.setText(Book_List_Activity.maxlen(book.title, 120));
             holder.mAuthorView.setText(Book_List_Activity.maxlen(book.author, 50));
+
 
             long lastread = book.lastread;
             long time = lastread;
