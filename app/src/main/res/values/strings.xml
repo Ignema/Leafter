@@ -90,6 +90,7 @@
     <string name="ctlgname">CtlgName</string>
     <string name="ctlgurl">CtlgURL</string>
     <string name="title_activity_splash_screen">Splash</string>
+    <string name="SplashScreen">SplashScreen</string>
 
 
     <!-- if your language/country has its own sites change or add them here -->
