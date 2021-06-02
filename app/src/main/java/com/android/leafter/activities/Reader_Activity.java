@@ -314,28 +314,14 @@ public class Reader_Activity extends Activity {
             @Override
             public void onClick(View v) {
                 if(!switcher) {
-                    count=0;
+                    FragmentsText=fragmentString(textview.getText().toString());
                     for (String s : FragmentsText) {
                         textToSpeech.speak(s, TextToSpeech.QUEUE_ADD, null);
-                        count++;
                     }
                     switcher=true;
                 }
                 else {
                     textToSpeech.stop();
-
-                    switcher=false;
-                    int d=0;
-                    for (String s : FragmentsText) {
-                        if(d>=count){
-                            backup.add(s);
-                        }
-                        d++;
-                    }
-                    FragmentsText.clear();
-                    for (String s : backup) {
-                        FragmentsText.add(s);
-                    }
                 }
             }
         });
@@ -411,7 +397,6 @@ public class Reader_Activity extends Activity {
                 final String content = html_data;
                 Log.e(TAG, " ======>  HTML Data : "+  html_data);
                 textview.setText(html_data);
-                IgnoreTags(textview);
                 Log.e(TAG,"=====> Result : "+textview.getText().toString() );
             }
         }
@@ -428,8 +413,8 @@ public class Reader_Activity extends Activity {
 
     }
 
-    public void IgnoreTags(TextView textView){
-        String result="", s=textView.getText().toString();
+    public String IgnoreTags(String textView){
+        String result="", s=textView;
         int n=s.length();
         for(int i=0;i<n;i++){
             if(s.charAt(i)!='<') {
@@ -443,12 +428,13 @@ public class Reader_Activity extends Activity {
                 while (s.charAt(i)!='>')i++;
             }
         }
-        textView.setText(result);
-        FragmentsText=fragmentString(textview.getText().toString());
+        Log.d("Darabani",result);
+        return result;
     }
 
-    public ArrayList<String> fragmentString(String text){
-
+    public ArrayList<String> fragmentString(String s){
+        String text=IgnoreTags(s);
+        Log.d("FinalTTS",text);
         ArrayList<String>arrOfStr =new ArrayList<>();
         int lengh=text.length();
         StringBuilder temp= new StringBuilder();
@@ -460,7 +446,7 @@ public class Reader_Activity extends Activity {
                     j++;
                 }
                 i=j;
-                Log.d("HERE",temp.toString());
+               // Log.d("HERE",temp.toString());
                 arrOfStr.add(temp.toString());
                 temp = new StringBuilder();
             }

@@ -1,9 +1,13 @@
 package com.android.leafter.adapters;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -30,14 +34,19 @@ public class SongAdapter extends BaseAdapter implements Filterable {
     private ArrayList<Song> songsfull;
     private LayoutInflater songInf;
 
+
+
+
     //constructor
     public SongAdapter(Context c, ArrayList<Song> theSongs){
         songs=theSongs;
         songInf=LayoutInflater.from(c);
-        songsfull=new ArrayList<>(songs);
     }
 
-
+    @Override
+    public int getCount() {
+        return songs.size();
+    }
     private final Filter myfilter=new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
@@ -72,10 +81,7 @@ public class SongAdapter extends BaseAdapter implements Filterable {
     }
 
 
-    @Override
-    public int getCount() {
-        return songs.size();
-    }
+
 
     @Override
     public Object getItem(int arg0) {
