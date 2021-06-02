@@ -3,8 +3,10 @@ package com.android.leafter.activities;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
@@ -19,6 +21,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.Display;
@@ -44,6 +47,7 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 
 import com.android.leafter.R;
+import com.android.leafter.Service.MusicService;
 import com.android.leafter.models.Book;
 
 import org.xml.sax.Parser;
@@ -59,7 +63,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Reader_Activity extends Activity {
+public class Reader_Activity extends Activity  {
 
     private static final String TAG = "ReaderActivity";
     public static final String READEREXITEDNORMALLY = "readerexitednormally";
@@ -1256,5 +1260,7 @@ public class Reader_Activity extends Activity {
             Log.e(TAG, t.getMessage(), t);
         }
     }
+
+
 }
 

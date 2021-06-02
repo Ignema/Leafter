@@ -41,6 +41,7 @@ public class SongAdapter extends BaseAdapter implements Filterable {
     public SongAdapter(Context c, ArrayList<Song> theSongs){
         songs=theSongs;
         songInf=LayoutInflater.from(c);
+        songsfull=new ArrayList<>(songs);
     }
 
     @Override
