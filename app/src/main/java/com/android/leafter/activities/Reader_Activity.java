@@ -125,8 +125,8 @@ public class Reader_Activity extends Activity {
                 }
             }
         });
-        textToSpeech.setPitch(.5f);
-        textToSpeech.setSpeechRate(.5f);
+        textToSpeech.setPitch(.7f);
+        textToSpeech.setSpeechRate(.7f);
 
         ActionBar ab = getActionBar();
         if (ab!=null) ab.hide();

@@ -44,6 +44,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.ui.AppBarConfiguration;
 
 import java.io.File;
@@ -66,7 +67,8 @@ public class Book_List_Activity extends AppCompatActivity {
     public static final String ACTION_SHOW_LAST_STATUS = "com.quaap.bookymcbookface.SHOW_LAST_STATUS";
 
     private DrawerLayout drawer;
-    MaterialToolbar topnavBar;
+    private Toolbar toolbar;
+
 
     private SharedPreferences data;
     private DatabaseAPI db;
@@ -96,6 +98,8 @@ public class Book_List_Activity extends AppCompatActivity {
                 importBook();
             }
         });
+        toolbar = findViewById(R.id.topToolbar);
+        setSupportActionBar(toolbar);
 
 
         BottomNavigationView bottomNavView = findViewById(R.id.bottomNavigationView);
@@ -105,8 +109,7 @@ public class Book_List_Activity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Fragment selectedFragment = null;
-                topnavBar = findViewById(R.id.topToolbar);
-                setSupportActionBar(topnavBar);
+
                 String topNavTitle = "";
                 switch (item.getItemId()) {
                     case R.id.miHome:
@@ -133,7 +136,7 @@ public class Book_List_Activity extends AppCompatActivity {
 //                    getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out).show(selectedFragment).commit();
 
 
-                    topnavBar.setTitle(topNavTitle);
+                    toolbar.setTitle(topNavTitle);
                 }
 
                 return true;
@@ -152,8 +155,6 @@ public class Book_List_Activity extends AppCompatActivity {
                 .build();
         //NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
-        Toolbar toolbar = findViewById(R.id.topToolbar);
-        //setSupportActionBar(toolbar);
 
 
         drawer = findViewById(R.id.drawerLayout);
@@ -173,6 +174,28 @@ public class Book_List_Activity extends AppCompatActivity {
 
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.top_nav_menu,menu);
+        MenuItem searchItem=menu.findItem(R.id.search);
+        SearchView searchView= (SearchView) searchItem.getActionView();
+        SearchViewModel searchViewModel=new ViewModelProvider(this).get(SearchViewModel.class);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                searchViewModel.setQuery(newText);
+                return false;
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override

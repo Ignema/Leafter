@@ -43,9 +43,9 @@ L'application donnera l'opportunité à ses utilisateurs de lire leurs livres pr
 <img src="https://github.com/Ignema/Leafter/blob/master/img/7.png?raw=true" width="200" height="400" />
 
 
-### Reader Options
+### Search Option
 
-<img src="https://github.com/Ignema/Leafter/blob/master/img/8.png?raw=true" width="200" height="400" />
+<img src="https://github.com/Ignema/Leafter/blob/master/img/13.png?raw=true" width="200" height="400" />
 
 
 ### Lighting Option
@@ -57,6 +57,6 @@ L'application donnera l'opportunité à ses utilisateurs de lire leurs livres pr
 
 <img src="https://github.com/Ignema/Leafter/blob/master/img/11.png?raw=true" width="200" height="400" />
 
-### Text-to-Speech Option
+### Text-to-Speech and Reader Options
 
-![tts]()
+<img src="https://github.com/Ignema/Leafter/blob/master/img/8.png?raw=true" width="200" height="400" />

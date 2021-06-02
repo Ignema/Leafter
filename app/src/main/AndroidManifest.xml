@@ -26,7 +26,7 @@
         </activity>
         <activity android:name=".activities.Book_List_Activity" />
         <activity android:name=".activities.Book_Info_Activity" />
-        <activity android:name=".activities.Music_Player_Activity" />
+        x
         <activity
             android:name=".activities.Reader_Activity"
             android:parentActivityName=".activities.Book_Info_Activity"
